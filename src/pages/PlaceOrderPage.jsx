@@ -44,26 +44,32 @@ const PlaceOrderPage = () => {
         },
       };
 
-      // UPDATED: We now send the full price breakdown to the backend
       const { data } = await axios.post(
         "http://localhost:5000/api/orders",
         {
           orderItems: cartItems,
           shippingAddress: shippingAddress,
-          itemsPrice: itemsPrice, // Added
-          shippingPrice: shippingPrice, // Added
-          taxPrice: taxPrice, // Added
+          itemsPrice: itemsPrice,
+          shippingPrice: shippingPrice,
+          taxPrice: taxPrice,
           totalPrice: totalPrice,
         },
         config,
       );
 
-      // --- CLEANUP: Clear cart from LocalStorage after successful order ---
-      localStorage.removeItem("cartItems");
-
-      // Redirect to the Order Details page
-      navigate(`/order/${data._id}`);
+      // --- FIX: Check if data and data._id exist before navigating ---
+      if (data && data._id) {
+        localStorage.removeItem("cartItems");
+        navigate(`/order/${data._id}`);
+      } else {
+        // This triggers if the server responds but doesn't return the new order object
+        console.error("Order created but no ID returned:", data);
+        alert(
+          "Order processed, but we couldn't find the order ID. Check console.",
+        );
+      }
     } catch (err) {
+      // This handles server errors (400, 500, etc.)
       alert(err.response?.data?.message || "Failed to place order");
     }
   };
