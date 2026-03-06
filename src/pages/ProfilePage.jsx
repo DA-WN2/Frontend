@@ -46,7 +46,7 @@ const ProfilePage = () => {
 
         // Fetching the orders for THIS specific user
         const { data } = await axios.get(
-          "http://localhost:5000/api/orders/mine",
+          "https://ecommerce-backend-0cza.onrender.com/api/orders/mine",
           config,
         );
 

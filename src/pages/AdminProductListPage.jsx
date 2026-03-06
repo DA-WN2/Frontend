@@ -20,7 +20,9 @@ const AdminProductListPage = () => {
 
     const fetchProducts = async () => {
       try {
-        const { data } = await axios.get("http://localhost:5000/api/products");
+        const { data } = await axios.get(
+          "https://ecommerce-backend-0cza.onrender.com/api/products",
+        );
         setProducts(data);
         setLoading(false);
       } catch (err) {
@@ -42,7 +44,10 @@ const AdminProductListPage = () => {
         const config = {
           headers: { Authorization: `Bearer ${userInfo.token}` },
         };
-        await axios.delete(`http://localhost:5000/api/products/${id}`, config);
+        await axios.delete(
+          `https://ecommerce-backend-0cza.onrender.com/api/products/${id}`,
+          config,
+        );
         setRefresh(!refresh); // Instantly reload the table so it vanishes!
       } catch (err) {
         alert(
@@ -64,7 +69,7 @@ const AdminProductListPage = () => {
 
         // This asks the backend to create a blank "Sample" product
         const { data } = await axios.post(
-          "http://localhost:5000/api/products",
+          "https://ecommerce-backend-0cza.onrender.com/api/products",
           {},
           config,
         );

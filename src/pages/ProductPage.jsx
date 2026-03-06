@@ -15,7 +15,7 @@ const ProductPage = () => {
     const fetchProduct = async () => {
       try {
         const { data } = await axios.get(
-          `http://localhost:5000/api/products/${id}`,
+          `https://ecommerce-backend-0cza.onrender.com/api/products/${id}`,
         );
         setProduct(data);
         setLoading(false);
@@ -93,7 +93,7 @@ const ProductPage = () => {
           <img
             src={
               product.image
-                ? `http://localhost:5000/${product.image.replace(/\\/g, "/").replace(/^\//, "")}`
+                ? `https://ecommerce-backend-0cza.onrender.com/${product.image.replace(/\\/g, "/").replace(/^\//, "")}`
                 : ""
             }
             alt={product.name}

@@ -39,7 +39,7 @@ const RegisterPage = () => {
 
       // Send the data to your Express backend
       const { data } = await axios.post(
-        "http://localhost:5000/api/users",
+        "https://ecommerce-backend-0cza.onrender.com/api/users",
         { name, email, password },
         config,
       );

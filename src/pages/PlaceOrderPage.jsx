@@ -45,7 +45,7 @@ const PlaceOrderPage = () => {
       };
 
       const { data } = await axios.post(
-        "http://localhost:5000/api/orders",
+        "https://ecommerce-backend-0cza.onrender.com/api/orders",
         {
           orderItems: cartItems,
           shippingAddress: shippingAddress,

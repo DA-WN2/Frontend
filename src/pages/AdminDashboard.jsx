@@ -1,7 +1,7 @@
 import { useState, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
 import axios from "axios";
-import { Link } from 'react-router-dom';
+import { Link } from "react-router-dom";
 
 const AdminDashboard = () => {
   const [orders, setOrders] = useState([]);
@@ -28,7 +28,7 @@ const AdminDashboard = () => {
 
         // Fetching EVERY order in the database
         const { data } = await axios.get(
-          "http://localhost:5000/api/orders",
+          "https://ecommerce-backend-0cza.onrender.com/api/orders",
           config,
         );
 

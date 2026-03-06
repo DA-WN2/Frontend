@@ -24,7 +24,7 @@ const ProductEditPage = () => {
     const fetchProduct = async () => {
       try {
         const { data } = await axios.get(
-          `http://localhost:5000/api/products/${productId}`,
+          `https://ecommerce-backend-0cza.onrender.com/api/products/${productId}`,
         );
         setName(data.name);
         setPrice(data.price);
@@ -57,7 +57,7 @@ const ProductEditPage = () => {
       };
 
       const { data } = await axios.post(
-        "http://localhost:5000/api/upload",
+        "https://ecommerce-backend-0cza.onrender.com/api/upload",
         formData,
         config,
       );
@@ -80,7 +80,7 @@ const ProductEditPage = () => {
       };
 
       await axios.put(
-        `http://localhost:5000/api/products/${productId}`,
+        `https://ecommerce-backend-0cza.onrender.com/api/products/${productId}`,
         { name, price, image, brand, category, countInStock, description },
         config,
       );

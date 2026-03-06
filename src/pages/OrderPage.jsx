@@ -20,7 +20,7 @@ const OrderPage = () => {
           headers: { Authorization: `Bearer ${userInfo.token}` },
         };
         const { data } = await axios.get(
-          `http://localhost:5000/api/orders/${orderId}`,
+          `https://ecommerce-backend-0cza.onrender.com/api/orders/${orderId}`,
           config,
         );
         setOrder(data);
@@ -52,7 +52,7 @@ const OrderPage = () => {
       };
 
       await axios.put(
-        `http://localhost:5000/api/orders/${orderId}/pay`,
+        `https://ecommerce-backend-0cza.onrender.com/api/orders/${orderId}/pay`,
         dummyPaymentResult,
         config,
       );
@@ -69,7 +69,7 @@ const OrderPage = () => {
     try {
       const config = { headers: { Authorization: `Bearer ${userInfo.token}` } };
       await axios.put(
-        `http://localhost:5000/api/orders/${orderId}/deliver`,
+        `https://ecommerce-backend-0cza.onrender.com/api/orders/${orderId}/deliver`,
         {},
         config,
       );

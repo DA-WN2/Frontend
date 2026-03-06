@@ -10,7 +10,9 @@ const HomePage = () => {
     // Fetches the latest groceries and electronics from your backend
     const fetchProducts = async () => {
       try {
-        const { data } = await axios.get("http://localhost:5000/api/products");
+        const { data } = await axios.get(
+          "https://ecommerce-backend-0cza.onrender.com/api/products",
+        );
         setProducts(data);
       } catch (error) {
         console.error("Error fetching products:", error);
@@ -108,7 +110,7 @@ const HomePage = () => {
                 }}
               >
                 <img
-                  src={`http://localhost:5000${product.image.startsWith("/") ? "" : "/"}${product.image}`}
+                  src={`https://ecommerce-backend-0cza.onrender.com${product.image.startsWith("/") ? "" : "/"}${product.image}`}
                   alt={product.name}
                   style={{ width: "100%", height: "100%", objectFit: "cover" }}
                   onError={(e) => {

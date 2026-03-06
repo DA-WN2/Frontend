@@ -15,7 +15,7 @@ const CartPage = () => {
     let p = path.replace(/\\/g, "/");
     if (p.startsWith("http")) return p;
     if (!p.startsWith("/")) p = "/" + p;
-    return `http://localhost:5000${p}`;
+    return `https://ecommerce-backend-0cza.onrender.com${p}`;
   };
 
   // 1. SMART CART: Initialize state from Local Storage
@@ -42,7 +42,7 @@ const CartPage = () => {
       if (id) {
         try {
           const { data } = await axios.get(
-            `http://localhost:5000/api/products/${id}`,
+            `https://ecommerce-backend-0cza.onrender.com/api/products/${id}`,
           );
 
           const newItem = {
