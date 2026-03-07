@@ -77,9 +77,11 @@ const CartPage = () => {
     fetchItemAndAddToCart();
   }, [id, qty]);
 
-  // Save to Local Storage whenever cart changes
+  // Save to Local Storage whenever cart changes AND update the Navbar Badge
   useEffect(() => {
     localStorage.setItem("cartItems", JSON.stringify(cartItems));
+    // 👇 THIS LINE KEEPS YOUR NAVBAR BADGE IN SYNC 👇
+    window.dispatchEvent(new Event("cartUpdated"));
   }, [cartItems]);
 
   const removeFromCartHandler = (productId) => {

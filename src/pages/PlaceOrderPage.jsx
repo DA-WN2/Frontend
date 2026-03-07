@@ -1,6 +1,7 @@
 import { useEffect } from "react";
 import { Link, useNavigate } from "react-router-dom";
 import axios from "axios";
+import { motion } from "framer-motion";
 
 const PlaceOrderPage = () => {
   const navigate = useNavigate();
@@ -19,6 +20,15 @@ const PlaceOrderPage = () => {
       navigate("/shipping");
     }
   }, [shippingAddress, navigate, userInfo]);
+
+  // Helper to normalize image paths
+  const makeUrl = (path) => {
+    if (!path) return "";
+    let p = path.replace(/\\/g, "/");
+    if (p.startsWith("http")) return p;
+    if (!p.startsWith("/")) p = "/" + p;
+    return `https://ecommerce-backend-0cza.onrender.com${p}`;
+  };
 
   // 2. Calculate Final Prices
   const addDecimals = (num) => (Math.round(num * 100) / 100).toFixed(2);
@@ -57,19 +67,22 @@ const PlaceOrderPage = () => {
         config,
       );
 
-      // --- FIX: Check if data and data._id exist before navigating ---
       if (data && data._id) {
+        // Clear the cart from memory
         localStorage.removeItem("cartItems");
+
+        // 👇 CRUCIAL: Tell the Navbar to remove the red number badge 👇
+        window.dispatchEvent(new Event("cartUpdated"));
+
+        // Redirect to the success page
         navigate(`/order/${data._id}`);
       } else {
-        // This triggers if the server responds but doesn't return the new order object
         console.error("Order created but no ID returned:", data);
         alert(
           "Order processed, but we couldn't find the order ID. Check console.",
         );
       }
     } catch (err) {
-      // This handles server errors (400, 500, etc.)
       alert(err.response?.data?.message || "Failed to place order");
     }
   };
@@ -77,13 +90,25 @@ const PlaceOrderPage = () => {
   return (
     <div className="min-h-screen bg-gray-50 py-8 px-4 sm:px-6 lg:px-8">
       <div className="max-w-7xl mx-auto">
-        <h1 className="text-4xl font-bold text-gray-900 mb-8">Order Summary</h1>
+        <motion.h1
+          initial={{ opacity: 0, y: -20 }}
+          animate={{ opacity: 1, y: 0 }}
+          transition={{ duration: 0.5 }}
+          className="text-4xl font-bold text-gray-900 mb-8"
+        >
+          Order Summary
+        </motion.h1>
 
         <div className="flex flex-col lg:flex-row gap-8">
-          {/* Order Details */}
+          {/* Left Side: Order Details */}
           <div className="flex-1 space-y-6">
             {/* Shipping Information */}
-            <div className="bg-white rounded-lg shadow-md p-6">
+            <motion.div
+              initial={{ opacity: 0, x: -50 }}
+              animate={{ opacity: 1, x: 0 }}
+              transition={{ duration: 0.5, delay: 0.1 }}
+              className="bg-white rounded-lg shadow-md p-6"
+            >
               <h2 className="text-2xl font-bold text-gray-900 mb-4 border-b border-gray-200 pb-2">
                 Shipping
               </h2>
@@ -97,10 +122,15 @@ const PlaceOrderPage = () => {
                   {shippingAddress.postalCode}, {shippingAddress.country}
                 </p>
               </div>
-            </div>
+            </motion.div>
 
             {/* Order Items */}
-            <div className="bg-white rounded-lg shadow-md p-6">
+            <motion.div
+              initial={{ opacity: 0, x: -50 }}
+              animate={{ opacity: 1, x: 0 }}
+              transition={{ duration: 0.5, delay: 0.2 }}
+              className="bg-white rounded-lg shadow-md p-6"
+            >
               <h2 className="text-2xl font-bold text-gray-900 mb-4 border-b border-gray-200 pb-2">
                 Order Items
               </h2>
@@ -113,12 +143,27 @@ const PlaceOrderPage = () => {
                       key={index}
                       className="flex justify-between items-center py-3 border-b border-gray-100 last:border-b-0"
                     >
-                      <Link
-                        to={`/product/${item.product}`}
-                        className="text-gray-900 hover:text-blue-600 font-semibold transition-colors"
-                      >
-                        {item.name}
-                      </Link>
+                      {/* ADDED: Product Image Thumbnail */}
+                      <div className="flex items-center space-x-4">
+                        <div className="w-12 h-12 rounded overflow-hidden border border-gray-200">
+                          <img
+                            src={makeUrl(item.image)}
+                            alt={item.name}
+                            className="w-full h-full object-cover"
+                            onError={(e) => {
+                              e.target.src =
+                                "https://via.placeholder.com/50?text=No+Img";
+                            }}
+                          />
+                        </div>
+                        <Link
+                          to={`/product/${item.product}`}
+                          className="text-gray-900 hover:text-blue-600 font-semibold transition-colors"
+                        >
+                          {item.name}
+                        </Link>
+                      </div>
+
                       <span className="text-gray-700">
                         {item.qty} x ${item.price} ={" "}
                         <span className="font-semibold">
@@ -129,28 +174,33 @@ const PlaceOrderPage = () => {
                   ))}
                 </div>
               )}
-            </div>
+            </motion.div>
           </div>
 
-          {/* Checkout Summary */}
-          <div className="lg:w-96 bg-white rounded-lg shadow-md p-6 h-fit">
+          {/* Right Side: Checkout Summary */}
+          <motion.div
+            initial={{ opacity: 0, x: 50 }}
+            animate={{ opacity: 1, x: 0 }}
+            transition={{ duration: 0.5, delay: 0.3 }}
+            className="lg:w-96 bg-white rounded-lg shadow-md p-6 h-fit"
+          >
             <h2 className="text-2xl font-bold text-gray-900 mb-6 border-b border-gray-200 pb-4">
               Order Summary
             </h2>
 
             <div className="space-y-4">
-              <div className="flex justify-between">
-                <span className="text-gray-700">Items:</span>
+              <div className="flex justify-between text-gray-700">
+                <span>Items:</span>
                 <span className="font-semibold">${itemsPrice}</span>
               </div>
 
-              <div className="flex justify-between">
-                <span className="text-gray-700">Shipping:</span>
+              <div className="flex justify-between text-gray-700">
+                <span>Shipping:</span>
                 <span className="font-semibold">${shippingPrice}</span>
               </div>
 
-              <div className="flex justify-between">
-                <span className="text-gray-700">Tax:</span>
+              <div className="flex justify-between text-gray-700">
+                <span>Tax:</span>
                 <span className="font-semibold">${taxPrice}</span>
               </div>
 
@@ -164,16 +214,16 @@ const PlaceOrderPage = () => {
               <button
                 onClick={placeOrderHandler}
                 disabled={cartItems.length === 0}
-                className={`w-full py-3 px-4 rounded-lg font-semibold text-lg transition-colors duration-200 mt-6 ${
+                className={`w-full py-3 px-4 rounded-lg font-bold text-lg transition-colors duration-200 mt-6 shadow-sm hover:shadow-md ${
                   cartItems.length === 0
                     ? "bg-gray-300 text-gray-500 cursor-not-allowed"
-                    : "bg-gray-800 hover:bg-gray-900 text-white"
+                    : "bg-blue-600 hover:bg-blue-700 text-white"
                 }`}
               >
                 Place Order
               </button>
             </div>
-          </div>
+          </motion.div>
         </div>
       </div>
     </div>

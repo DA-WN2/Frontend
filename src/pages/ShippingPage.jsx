@@ -4,19 +4,17 @@ import { useNavigate } from "react-router-dom";
 const ShippingPage = () => {
   const navigate = useNavigate();
 
-  // Load saved address from memory if it exists
-  const savedAddress =
-    JSON.parse(localStorage.getItem("shippingAddress")) || {};
-
-  const [address, setAddress] = useState(savedAddress.address || "");
-  const [city, setCity] = useState(savedAddress.city || "");
-  const [postalCode, setPostalCode] = useState(savedAddress.postalCode || "");
-  const [country, setCountry] = useState(savedAddress.country || "");
+  // START FRESH: Initialize all state variables as empty strings
+  // so the form is never pre-filled with old data.
+  const [address, setAddress] = useState("");
+  const [city, setCity] = useState("");
+  const [postalCode, setPostalCode] = useState("");
+  const [country, setCountry] = useState("");
 
   const submitHandler = (e) => {
     e.preventDefault();
 
-    // Save the shipping details to Local Storage
+    // Save the new shipping details to Local Storage so the next page can read them
     localStorage.setItem(
       "shippingAddress",
       JSON.stringify({ address, city, postalCode, country }),

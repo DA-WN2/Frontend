@@ -49,6 +49,9 @@ const HomePage = () => {
     // 3. Save the updated list back to localStorage
     localStorage.setItem("cartItems", JSON.stringify(cartItems));
 
+    // --- NEW: Trigger the Navbar to update the red badge instantly ---
+    window.dispatchEvent(new Event("cartUpdated"));
+
     // --- VISUAL FEEDBACK LOGIC ---
     // Set this specific product ID to 'true' to change the button text
     setAddedItems((prev) => ({ ...prev, [product._id]: true }));

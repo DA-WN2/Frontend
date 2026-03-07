@@ -1,11 +1,30 @@
 import { Link, useNavigate } from "react-router-dom";
 import { ShoppingCart, User, LogOut, Menu, X } from "lucide-react";
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { motion, AnimatePresence } from "framer-motion";
 
 const Navbar = () => {
   const navigate = useNavigate();
   const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
+  const [cartCount, setCartCount] = useState(0); // Added state for the cart badge
+
+  // Function to calculate total items in the cart
+  const updateCartCount = () => {
+    const cartItems = JSON.parse(localStorage.getItem("cartItems")) || [];
+    const totalItems = cartItems.reduce((acc, item) => acc + item.qty, 0);
+    setCartCount(totalItems);
+  };
+
+  useEffect(() => {
+    // 1. Check the cart count when the Navbar first loads
+    updateCartCount();
+
+    // 2. Listen for the custom event we added to HomePage.jsx
+    window.addEventListener("cartUpdated", updateCartCount);
+
+    // 3. Clean up the listener when the component unmounts
+    return () => window.removeEventListener("cartUpdated", updateCartCount);
+  }, []);
 
   // Check if the user is currently logged in by checking Local Storage
   const userInfo = localStorage.getItem("userInfo")
@@ -13,9 +32,17 @@ const Navbar = () => {
     : null;
 
   const logoutHandler = () => {
-    // Remove the VIP pass from memory
+    // 1. Remove the VIP pass from memory
     localStorage.removeItem("userInfo");
-    // Send them back to the login page
+
+    // 2. THE FIX: Clear the previous user's cart and shipping data
+    localStorage.removeItem("cartItems");
+    localStorage.removeItem("shippingAddress");
+
+    // 3. Trigger the Navbar event so the red cart badge disappears instantly
+    window.dispatchEvent(new Event("cartUpdated"));
+
+    // 4. Send them back to the login page
     navigate("/login");
   };
 
@@ -49,7 +76,15 @@ const Navbar = () => {
                 to="/cart"
                 className="text-white hover:text-cyan-400 transition-colors duration-300 flex items-center space-x-2 font-medium"
               >
-                <ShoppingCart size={20} />
+                {/* Wrapped the icon in a relative div to pin the badge to it */}
+                <div className="relative">
+                  <ShoppingCart size={20} />
+                  {cartCount > 0 && (
+                    <span className="absolute -top-2 -right-2 bg-red-500 text-white text-[10px] font-bold h-4 w-4 flex items-center justify-center rounded-full shadow-sm">
+                      {cartCount}
+                    </span>
+                  )}
+                </div>
                 <span>Cart</span>
               </Link>
             </motion.div>
@@ -149,10 +184,18 @@ const Navbar = () => {
               >
                 <Link
                   to="/cart"
-                  className="text-white hover:text-cyan-400 transition-colors duration-300 flex items-center space-x-2 font-medium block"
+                  className="text-white hover:text-cyan-400 transition-colors duration-300 flex items-center space-x-2 font-medium"
                   onClick={() => setIsMobileMenuOpen(false)}
                 >
-                  <ShoppingCart size={20} />
+                  {/* Applied the same badge logic to the mobile menu */}
+                  <div className="relative">
+                    <ShoppingCart size={20} />
+                    {cartCount > 0 && (
+                      <span className="absolute -top-2 -right-2 bg-red-500 text-white text-[10px] font-bold h-4 w-4 flex items-center justify-center rounded-full shadow-sm">
+                        {cartCount}
+                      </span>
+                    )}
+                  </div>
                   <span>Cart</span>
                 </Link>
               </motion.div>
