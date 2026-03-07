@@ -85,20 +85,6 @@ const HomePage = () => {
           >
             Discover amazing products at unbeatable prices
           </motion.p>
-          <motion.div
-            initial={{ opacity: 0, y: 20 }}
-            animate={{ opacity: 1, y: 0 }}
-            transition={{ duration: 0.8, delay: 0.6 }}
-            className="flex justify-center space-x-4"
-          >
-            <Link
-              to="/cart"
-              className="bg-white text-blue-600 px-8 py-3 rounded-lg shadow-md font-semibold hover:bg-gray-100 transition-all duration-200 flex items-center space-x-2"
-            >
-              <FaShoppingCart />
-              <span>View Cart</span>
-            </Link>
-          </motion.div>
         </div>
       </motion.div>
 
