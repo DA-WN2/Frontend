@@ -44,109 +44,91 @@ const AdminDashboard = () => {
   }, [navigate, userInfo]);
 
   return (
-    <div
-      style={{
-        maxWidth: "1200px",
-        margin: "40px auto",
-        fontFamily: "sans-serif",
-        backgroundColor: "#fff",
-        padding: "30px",
-        borderRadius: "8px",
-        boxShadow: "0 4px 8px rgba(0,0,0,0.1)",
-      }}
-    >
-      <h2
-        style={{
-          fontSize: "32px",
-          borderBottom: "2px solid #eee",
-          paddingBottom: "15px",
-          marginTop: 0,
-        }}
-      >
-        Admin Control Room: All Orders
-      </h2>
+    <div className="min-h-screen bg-gray-50 py-8 px-4 sm:px-6 lg:px-8">
+      <div className="max-w-7xl mx-auto">
+        <div className="bg-white rounded-xl shadow-lg p-8">
+          <h1 className="text-4xl font-bold text-gray-900 mb-8 border-b-2 border-gray-200 pb-4">
+            Admin Control Room: All Orders
+          </h1>
 
-      {loading ? (
-        <p>Loading the master order list...</p>
-      ) : error ? (
-        <div
-          style={{
-            padding: "15px",
-            backgroundColor: "#ffcccc",
-            color: "#cc0000",
-            borderRadius: "4px",
-          }}
-        >
-          {error}
-        </div>
-      ) : (
-        <div style={{ overflowX: "auto", marginTop: "20px" }}>
-          <table
-            style={{
-              width: "100%",
-              borderCollapse: "collapse",
-              textAlign: "left",
-            }}
-          >
-            <thead>
-              <tr style={{ backgroundColor: "#222", color: "#fff" }}>
-                <th style={{ padding: "15px" }}>ORDER ID</th>
-                <th style={{ padding: "15px" }}>USER ID</th>
-                <th style={{ padding: "15px" }}>DATE</th>
-                <th style={{ padding: "15px" }}>TOTAL</th>
-                <th style={{ padding: "15px" }}>PAID</th>
-                <th style={{ padding: "15px" }}>DELIVERED</th>
-              </tr>
-            </thead>
-            <tbody>
-              {orders.map((order) => (
-                <tr key={order._id} style={{ borderBottom: "1px solid #eee" }}>
-                  <td style={{ padding: "15px", fontWeight: "bold" }}>
-                    <Link
-                      to={`/order/${order._id}`}
-                      style={{ color: "#3498db", textDecoration: "none" }}
+          {loading ? (
+            <p className="text-gray-600 text-lg">
+              Loading the master order list...
+            </p>
+          ) : error ? (
+            <div className="bg-red-50 border border-red-200 text-red-700 px-4 py-3 rounded-lg mb-6">
+              {error}
+            </div>
+          ) : (
+            <div className="overflow-x-auto">
+              <table className="w-full border-collapse bg-white">
+                <thead>
+                  <tr className="bg-gray-800 text-white">
+                    <th className="px-6 py-4 text-left font-semibold">
+                      ORDER ID
+                    </th>
+                    <th className="px-6 py-4 text-left font-semibold">
+                      USER ID
+                    </th>
+                    <th className="px-6 py-4 text-left font-semibold">DATE</th>
+                    <th className="px-6 py-4 text-left font-semibold">TOTAL</th>
+                    <th className="px-6 py-4 text-left font-semibold">PAID</th>
+                    <th className="px-6 py-4 text-left font-semibold">
+                      DELIVERED
+                    </th>
+                  </tr>
+                </thead>
+                <tbody>
+                  {orders.map((order) => (
+                    <tr
+                      key={order._id}
+                      className="border-b border-gray-200 hover:bg-gray-50"
                     >
-                      {order._id.substring(0, 10)}...
-                    </Link>
-                  </td>
-
-                  <td style={{ padding: "15px" }}>
-                    {order.user
-                      ? order.user.name ||
-                        String(order.user._id || order.user).substring(0, 10) +
-                          "..."
-                      : "Guest"}
-                  </td>
-                  <td style={{ padding: "15px" }}>
-                    {order.createdAt.substring(0, 10)}
-                  </td>
-                  <td style={{ padding: "15px" }}>
-                    ${order.totalPrice.toFixed(2)}
-                  </td>
-                  <td
-                    style={{
-                      padding: "15px",
-                      fontWeight: "bold",
-                      color: order.isPaid ? "#2ecc71" : "#e74c3c",
-                    }}
-                  >
-                    {order.isPaid ? "Yes" : "No"}
-                  </td>
-                  <td
-                    style={{
-                      padding: "15px",
-                      fontWeight: "bold",
-                      color: order.isDelivered ? "#2ecc71" : "#e74c3c",
-                    }}
-                  >
-                    {order.isDelivered ? "Yes" : "No"}
-                  </td>
-                </tr>
-              ))}
-            </tbody>
-          </table>
+                      <td className="px-6 py-4 font-semibold">
+                        <Link
+                          to={`/order/${order._id}`}
+                          className="text-blue-600 hover:text-blue-800 transition-colors"
+                        >
+                          {order._id.substring(0, 10)}...
+                        </Link>
+                      </td>
+                      <td className="px-6 py-4 text-gray-700">
+                        {order.user
+                          ? order.user.name ||
+                            String(order.user._id || order.user).substring(
+                              0,
+                              10,
+                            ) + "..."
+                          : "Guest"}
+                      </td>
+                      <td className="px-6 py-4 text-gray-700">
+                        {order.createdAt.substring(0, 10)}
+                      </td>
+                      <td className="px-6 py-4 text-gray-700 font-semibold">
+                        ${order.totalPrice.toFixed(2)}
+                      </td>
+                      <td
+                        className={`px-6 py-4 font-semibold ${
+                          order.isPaid ? "text-green-600" : "text-red-600"
+                        }`}
+                      >
+                        {order.isPaid ? "Yes" : "No"}
+                      </td>
+                      <td
+                        className={`px-6 py-4 font-semibold ${
+                          order.isDelivered ? "text-green-600" : "text-red-600"
+                        }`}
+                      >
+                        {order.isDelivered ? "Yes" : "No"}
+                      </td>
+                    </tr>
+                  ))}
+                </tbody>
+              </table>
+            </div>
+          )}
         </div>
-      )}
+      </div>
     </div>
   );
 };

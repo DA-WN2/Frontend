@@ -27,148 +27,98 @@ const ShippingPage = () => {
   };
 
   return (
-    <div
-      style={{
-        maxWidth: "500px",
-        margin: "40px auto",
-        fontFamily: "sans-serif",
-        backgroundColor: "#fff",
-        padding: "30px",
-        borderRadius: "8px",
-        boxShadow: "0 4px 8px rgba(0,0,0,0.1)",
-      }}
-    >
-      <h2
-        style={{ fontSize: "28px", marginBottom: "20px", textAlign: "center" }}
-      >
-        Shipping Address
-      </h2>
+    <div className="min-h-screen bg-gray-50 flex items-center justify-center py-12 px-4 sm:px-6 lg:px-8">
+      <div className="max-w-md w-full space-y-8">
+        <div className="bg-white rounded-xl shadow-lg p-8">
+          <div className="text-center">
+            <h1 className="text-3xl font-bold text-gray-900 mb-2">
+              Shipping Address
+            </h1>
+            <p className="text-gray-600">Please enter your shipping details.</p>
+          </div>
 
-      <form
-        onSubmit={submitHandler}
-        style={{ display: "flex", flexDirection: "column", gap: "15px" }}
-      >
-        <div>
-          <label
-            style={{
-              display: "block",
-              marginBottom: "5px",
-              fontWeight: "bold",
-            }}
-          >
-            Address
-          </label>
-          <input
-            type="text"
-            value={address}
-            onChange={(e) => setAddress(e.target.value)}
-            required
-            placeholder="123 Main St"
-            style={{
-              width: "100%",
-              padding: "10px",
-              borderRadius: "4px",
-              border: "1px solid #ccc",
-              boxSizing: "border-box",
-            }}
-          />
+          <form onSubmit={submitHandler} className="mt-8 space-y-6">
+            <div>
+              <label
+                htmlFor="address"
+                className="block text-sm font-medium text-gray-700 mb-2"
+              >
+                Address
+              </label>
+              <input
+                id="address"
+                type="text"
+                value={address}
+                onChange={(e) => setAddress(e.target.value)}
+                required
+                className="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500 transition-colors"
+                placeholder="123 Main St"
+              />
+            </div>
+
+            <div>
+              <label
+                htmlFor="city"
+                className="block text-sm font-medium text-gray-700 mb-2"
+              >
+                City
+              </label>
+              <input
+                id="city"
+                type="text"
+                value={city}
+                onChange={(e) => setCity(e.target.value)}
+                required
+                className="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500 transition-colors"
+                placeholder="Kozhikode"
+              />
+            </div>
+
+            <div>
+              <label
+                htmlFor="postalCode"
+                className="block text-sm font-medium text-gray-700 mb-2"
+              >
+                Postal Code
+              </label>
+              <input
+                id="postalCode"
+                type="text"
+                value={postalCode}
+                onChange={(e) => setPostalCode(e.target.value)}
+                required
+                className="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500 transition-colors"
+                placeholder="673001"
+              />
+            </div>
+
+            <div>
+              <label
+                htmlFor="country"
+                className="block text-sm font-medium text-gray-700 mb-2"
+              >
+                Country
+              </label>
+              <input
+                id="country"
+                type="text"
+                value={country}
+                onChange={(e) => setCountry(e.target.value)}
+                required
+                className="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500 transition-colors"
+                placeholder="India"
+              />
+            </div>
+
+            <button
+              type="submit"
+              className="w-full bg-gray-800 hover:bg-gray-900 text-white font-semibold py-3 px-4 rounded-lg transition-colors duration-200 focus:outline-none focus:ring-2 focus:ring-gray-500 focus:ring-offset-2"
+            >
+              Continue
+            </button>
+          </form>
         </div>
-
-        <div>
-          <label
-            style={{
-              display: "block",
-              marginBottom: "5px",
-              fontWeight: "bold",
-            }}
-          >
-            City
-          </label>
-          <input
-            type="text"
-            value={city}
-            onChange={(e) => setCity(e.target.value)}
-            required
-            placeholder="Kozhikode"
-            style={{
-              width: "100%",
-              padding: "10px",
-              borderRadius: "4px",
-              border: "1px solid #ccc",
-              boxSizing: "border-box",
-            }}
-          />
-        </div>
-
-        <div>
-          <label
-            style={{
-              display: "block",
-              marginBottom: "5px",
-              fontWeight: "bold",
-            }}
-          >
-            Postal Code
-          </label>
-          <input
-            type="text"
-            value={postalCode}
-            onChange={(e) => setPostalCode(e.target.value)}
-            required
-            placeholder="673001"
-            style={{
-              width: "100%",
-              padding: "10px",
-              borderRadius: "4px",
-              border: "1px solid #ccc",
-              boxSizing: "border-box",
-            }}
-          />
-        </div>
-
-        <div>
-          <label
-            style={{
-              display: "block",
-              marginBottom: "5px",
-              fontWeight: "bold",
-            }}
-          >
-            Country
-          </label>
-          <input
-            type="text"
-            value={country}
-            onChange={(e) => setCountry(e.target.value)}
-            required
-            placeholder="India"
-            style={{
-              width: "100%",
-              padding: "10px",
-              borderRadius: "4px",
-              border: "1px solid #ccc",
-              boxSizing: "border-box",
-            }}
-          />
-        </div>
-
-        <button
-          type="submit"
-          style={{
-            backgroundColor: "#222",
-            color: "white",
-            padding: "15px",
-            border: "none",
-            borderRadius: "4px",
-            fontWeight: "bold",
-            fontSize: "16px",
-            cursor: "pointer",
-            marginTop: "10px",
-          }}
-        >
-          Continue
-        </button>
-      </form>
+      </div>
     </div>
   );
 };

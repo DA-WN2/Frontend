@@ -1,6 +1,8 @@
 import { useState, useEffect } from "react";
 import { useNavigate, Link, useLocation } from "react-router-dom";
 import axios from "axios";
+import { motion } from "framer-motion";
+import { FaEnvelope, FaLock, FaSignInAlt } from "react-icons/fa";
 
 const LoginPage = () => {
   const [email, setEmail] = useState("");
@@ -49,119 +51,123 @@ const LoginPage = () => {
   };
 
   return (
-    <div
-      style={{
-        maxWidth: "400px",
-        margin: "50px auto",
-        padding: "20px",
-        backgroundColor: "#fff",
-        borderRadius: "8px",
-        boxShadow: "0 4px 8px rgba(0,0,0,0.1)",
-        fontFamily: "sans-serif",
-      }}
-    >
-      <h1 style={{ textAlign: "center", marginBottom: "20px" }}>Sign In</h1>
-
-      {error && (
-        <div
-          style={{
-            backgroundColor: "#ffcccc",
-            color: "#cc0000",
-            padding: "10px",
-            borderRadius: "4px",
-            marginBottom: "15px",
-            textAlign: "center",
-          }}
-        >
-          {error}
-        </div>
-      )}
-
-      <form
-        onSubmit={submitHandler}
-        style={{ display: "flex", flexDirection: "column", gap: "15px" }}
+    <div className="min-h-screen bg-gradient-to-br from-blue-50 to-indigo-100 flex items-center justify-center py-12 px-4 sm:px-6 lg:px-8">
+      <motion.div
+        initial={{ opacity: 0, y: 50 }}
+        animate={{ opacity: 1, y: 0 }}
+        transition={{ duration: 0.6 }}
+        className="max-w-md w-full space-y-8"
       >
-        <div>
-          <label
-            style={{
-              display: "block",
-              marginBottom: "5px",
-              fontWeight: "bold",
-            }}
+        <div className="bg-white rounded-xl shadow-2xl p-8">
+          <motion.div
+            initial={{ opacity: 0, scale: 0.9 }}
+            animate={{ opacity: 1, scale: 1 }}
+            transition={{ duration: 0.6, delay: 0.2 }}
+            className="text-center"
           >
-            Email Address
-          </label>
-          <input
-            type="email"
-            value={email}
-            onChange={(e) => setEmail(e.target.value)}
-            required
-            style={{
-              width: "100%",
-              padding: "10px",
-              borderRadius: "4px",
-              border: "1px solid #ccc",
-              boxSizing: "border-box",
-            }}
-          />
-        </div>
+            <h1 className="text-3xl font-bold text-gray-900 mb-2">Sign In</h1>
+            <p className="text-gray-600">
+              Welcome back! Please sign in to your account.
+            </p>
+          </motion.div>
 
-        <div>
-          <label
-            style={{
-              display: "block",
-              marginBottom: "5px",
-              fontWeight: "bold",
-            }}
+          {error && (
+            <motion.div
+              initial={{ opacity: 0, x: -20 }}
+              animate={{ opacity: 1, x: 0 }}
+              className="mt-6 bg-red-50 border border-red-200 text-red-700 px-4 py-3 rounded-lg text-center"
+            >
+              {error}
+            </motion.div>
+          )}
+
+          <form onSubmit={submitHandler} className="mt-8 space-y-6">
+            <motion.div
+              initial={{ opacity: 0, x: -20 }}
+              animate={{ opacity: 1, x: 0 }}
+              transition={{ duration: 0.6, delay: 0.4 }}
+            >
+              <label
+                htmlFor="email"
+                className="block text-sm font-medium text-gray-700 mb-2"
+              >
+                Email Address
+              </label>
+              <div className="relative">
+                <FaEnvelope className="absolute left-3 top-3.5 text-gray-400" />
+                <input
+                  id="email"
+                  type="email"
+                  value={email}
+                  onChange={(e) => setEmail(e.target.value)}
+                  required
+                  className="w-full pl-10 pr-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500 transition-colors"
+                  placeholder="Enter your email"
+                />
+              </div>
+            </motion.div>
+
+            <motion.div
+              initial={{ opacity: 0, x: -20 }}
+              animate={{ opacity: 1, x: 0 }}
+              transition={{ duration: 0.6, delay: 0.6 }}
+            >
+              <label
+                htmlFor="password"
+                className="block text-sm font-medium text-gray-700 mb-2"
+              >
+                Password
+              </label>
+              <div className="relative">
+                <FaLock className="absolute left-3 top-3.5 text-gray-400" />
+                <input
+                  id="password"
+                  type="password"
+                  value={password}
+                  onChange={(e) => setPassword(e.target.value)}
+                  required
+                  className="w-full pl-10 pr-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500 transition-colors"
+                  placeholder="Enter your password"
+                />
+              </div>
+            </motion.div>
+
+            <motion.button
+              initial={{ opacity: 0, y: 20 }}
+              animate={{ opacity: 1, y: 0 }}
+              transition={{ duration: 0.6, delay: 0.8 }}
+              whileHover={{ scale: 1.05 }}
+              whileTap={{ scale: 0.95 }}
+              type="submit"
+              className="w-full bg-green-600 hover:bg-green-700 text-white font-semibold py-3 px-4 rounded-lg transition-colors duration-200 focus:outline-none focus:ring-2 focus:ring-green-500 focus:ring-offset-2 flex items-center justify-center space-x-2"
+            >
+              <FaSignInAlt />
+              <span>Sign In</span>
+            </motion.button>
+          </form>
+
+          <motion.div
+            initial={{ opacity: 0 }}
+            animate={{ opacity: 1 }}
+            transition={{ duration: 0.6, delay: 1 }}
+            className="mt-6 text-center"
           >
-            Password
-          </label>
-          <input
-            type="password"
-            value={password}
-            onChange={(e) => setPassword(e.target.value)}
-            required
-            style={{
-              width: "100%",
-              padding: "10px",
-              borderRadius: "4px",
-              border: "1px solid #ccc",
-              boxSizing: "border-box",
-            }}
-          />
+            <p className="text-sm text-gray-600">
+              New Customer?{" "}
+              <Link
+                to={
+                  redirect !== "/"
+                    ? `/register?redirect=${redirect}`
+                    : "/register"
+                }
+                className="font-semibold text-blue-600 hover:text-blue-500 transition-colors"
+              >
+                Register Here
+              </Link>
+            </p>
+          </motion.div>
         </div>
-
-        <button
-          type="submit"
-          style={{
-            backgroundColor: "#2ecc71",
-            color: "white",
-            padding: "12px",
-            border: "none",
-            borderRadius: "4px",
-            fontWeight: "bold",
-            cursor: "pointer",
-            marginTop: "10px",
-          }}
-        >
-          Sign In
-        </button>
-      </form>
-
-      {/* --- ADDED REGISTRATION TOGGLE --- */}
-      <div style={{ marginTop: "20px", textAlign: "center", fontSize: "14px" }}>
-        New Customer?{" "}
-        <Link
-          to={redirect !== "/" ? `/register?redirect=${redirect}` : "/register"}
-          style={{
-            color: "#3498db",
-            textDecoration: "none",
-            fontWeight: "bold",
-          }}
-        >
-          Register Here
-        </Link>
-      </div>
+      </motion.div>
     </div>
   );
 };

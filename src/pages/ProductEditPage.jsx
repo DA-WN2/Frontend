@@ -93,262 +93,165 @@ const ProductEditPage = () => {
   };
 
   return (
-    <div
-      style={{
-        maxWidth: "600px",
-        margin: "40px auto",
-        fontFamily: "sans-serif",
-      }}
-    >
-      <Link
-        to="/admin/productlist"
-        style={{
-          textDecoration: "none",
-          color: "#333",
-          fontWeight: "bold",
-          display: "inline-block",
-          marginBottom: "20px",
-        }}
-      >
-        &larr; Go Back
-      </Link>
+    <div className="min-h-screen bg-gray-50 py-8 px-4 sm:px-6 lg:px-8">
+      <div className="max-w-2xl mx-auto">
+        <Link
+          to="/admin/productlist"
+          className="inline-flex items-center text-gray-600 hover:text-gray-800 font-semibold mb-8 transition-colors duration-200"
+        >
+          <span className="mr-2">←</span>
+          Go Back
+        </Link>
 
-      <div
-        style={{
-          backgroundColor: "#fff",
-          padding: "30px",
-          borderRadius: "8px",
-          boxShadow: "0 4px 8px rgba(0,0,0,0.1)",
-        }}
-      >
-        <h2 style={{ marginTop: 0, marginBottom: "20px", fontSize: "28px" }}>
-          Edit Product
-        </h2>
+        <div className="bg-white rounded-xl shadow-lg p-8">
+          <h1 className="text-3xl font-bold text-gray-900 mb-8">
+            Edit Product
+          </h1>
 
-        {loading ? (
-          <p>Loading product details...</p>
-        ) : error ? (
-          <div
-            style={{
-              padding: "15px",
-              backgroundColor: "#ffcccc",
-              color: "#cc0000",
-              borderRadius: "4px",
-            }}
-          >
-            {error}
-          </div>
-        ) : (
-          <form
-            onSubmit={submitHandler}
-            style={{ display: "flex", flexDirection: "column", gap: "15px" }}
-          >
-            {/* Name Input */}
-            <div>
-              <label
-                style={{
-                  display: "block",
-                  marginBottom: "5px",
-                  fontWeight: "bold",
-                }}
-              >
-                Name
-              </label>
-              <input
-                type="text"
-                value={name}
-                onChange={(e) => setName(e.target.value)}
-                required
-                style={{
-                  width: "100%",
-                  padding: "10px",
-                  borderRadius: "4px",
-                  border: "1px solid #ccc",
-                  boxSizing: "border-box",
-                }}
-              />
+          {loading ? (
+            <p className="text-gray-600 text-lg">Loading product details...</p>
+          ) : error ? (
+            <div className="bg-red-50 border border-red-200 text-red-700 px-4 py-3 rounded-lg mb-6">
+              {error}
             </div>
-
-            {/* Price and Stock */}
-            <div style={{ display: "flex", gap: "15px" }}>
-              <div style={{ flex: 1 }}>
+          ) : (
+            <form onSubmit={submitHandler} className="space-y-6">
+              {/* Name Input */}
+              <div>
                 <label
-                  style={{
-                    display: "block",
-                    marginBottom: "5px",
-                    fontWeight: "bold",
-                  }}
+                  htmlFor="name"
+                  className="block text-sm font-medium text-gray-700 mb-2"
                 >
-                  Price ($)
+                  Name
                 </label>
                 <input
-                  type="number"
-                  value={price}
-                  onChange={(e) => setPrice(e.target.value)}
+                  id="name"
+                  type="text"
+                  value={name}
+                  onChange={(e) => setName(e.target.value)}
                   required
-                  style={{
-                    width: "100%",
-                    padding: "10px",
-                    borderRadius: "4px",
-                    border: "1px solid #ccc",
-                    boxSizing: "border-box",
-                  }}
+                  className="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500 transition-colors"
                 />
               </div>
-              <div style={{ flex: 1 }}>
-                <label
-                  style={{
-                    display: "block",
-                    marginBottom: "5px",
-                    fontWeight: "bold",
-                  }}
-                >
-                  Count In Stock
+
+              {/* Price and Stock */}
+              <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+                <div>
+                  <label
+                    htmlFor="price"
+                    className="block text-sm font-medium text-gray-700 mb-2"
+                  >
+                    Price ($)
+                  </label>
+                  <input
+                    id="price"
+                    type="number"
+                    value={price}
+                    onChange={(e) => setPrice(e.target.value)}
+                    required
+                    className="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500 transition-colors"
+                  />
+                </div>
+                <div>
+                  <label
+                    htmlFor="countInStock"
+                    className="block text-sm font-medium text-gray-700 mb-2"
+                  >
+                    Count In Stock
+                  </label>
+                  <input
+                    id="countInStock"
+                    type="number"
+                    value={countInStock}
+                    onChange={(e) => setCountInStock(e.target.value)}
+                    required
+                    className="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500 transition-colors"
+                  />
+                </div>
+              </div>
+
+              {/* Image Upload Block */}
+              <div>
+                <label className="block text-sm font-medium text-gray-700 mb-2">
+                  Product Image
                 </label>
                 <input
-                  type="number"
-                  value={countInStock}
-                  onChange={(e) => setCountInStock(e.target.value)}
-                  required
-                  style={{
-                    width: "100%",
-                    padding: "10px",
-                    borderRadius: "4px",
-                    border: "1px solid #ccc",
-                    boxSizing: "border-box",
-                  }}
+                  type="file"
+                  onChange={uploadFileHandler}
+                  className="mb-3 block w-full text-sm text-gray-500 file:mr-4 file:py-2 file:px-4 file:rounded-lg file:border-0 file:text-sm file:font-semibold file:bg-blue-50 file:text-blue-700 hover:file:bg-blue-100"
                 />
-              </div>
-            </div>
-
-            {/* Image Upload Block */}
-            <div>
-              <label
-                style={{
-                  display: "block",
-                  marginBottom: "5px",
-                  fontWeight: "bold",
-                }}
-              >
-                Choose Image File
-              </label>
-              <input
-                type="file"
-                onChange={uploadFileHandler}
-                style={{ marginBottom: "10px" }}
-              />
-              <input
-                type="text"
-                value={image}
-                onChange={(e) => setImage(e.target.value)}
-                placeholder="Or enter image URL"
-                style={{
-                  width: "100%",
-                  padding: "10px",
-                  borderRadius: "4px",
-                  border: "1px solid #ccc",
-                  boxSizing: "border-box",
-                }}
-              />
-            </div>
-
-            {/* Brand and Category */}
-            <div style={{ display: "flex", gap: "15px" }}>
-              <div style={{ flex: 1 }}>
-                <label
-                  style={{
-                    display: "block",
-                    marginBottom: "5px",
-                    fontWeight: "bold",
-                  }}
-                >
-                  Brand
-                </label>
                 <input
                   type="text"
-                  value={brand}
-                  onChange={(e) => setBrand(e.target.value)}
-                  required
-                  style={{
-                    width: "100%",
-                    padding: "10px",
-                    borderRadius: "4px",
-                    border: "1px solid #ccc",
-                    boxSizing: "border-box",
-                  }}
+                  value={image}
+                  onChange={(e) => setImage(e.target.value)}
+                  placeholder="Or enter image URL"
+                  className="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500 transition-colors"
                 />
               </div>
-              <div style={{ flex: 1 }}>
+
+              {/* Brand and Category */}
+              <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+                <div>
+                  <label
+                    htmlFor="brand"
+                    className="block text-sm font-medium text-gray-700 mb-2"
+                  >
+                    Brand
+                  </label>
+                  <input
+                    id="brand"
+                    type="text"
+                    value={brand}
+                    onChange={(e) => setBrand(e.target.value)}
+                    required
+                    className="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500 transition-colors"
+                  />
+                </div>
+                <div>
+                  <label
+                    htmlFor="category"
+                    className="block text-sm font-medium text-gray-700 mb-2"
+                  >
+                    Category
+                  </label>
+                  <input
+                    id="category"
+                    type="text"
+                    value={category}
+                    onChange={(e) => setCategory(e.target.value)}
+                    required
+                    className="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500 transition-colors"
+                  />
+                </div>
+              </div>
+
+              {/* Description */}
+              <div>
                 <label
-                  style={{
-                    display: "block",
-                    marginBottom: "5px",
-                    fontWeight: "bold",
-                  }}
+                  htmlFor="description"
+                  className="block text-sm font-medium text-gray-700 mb-2"
                 >
-                  Category
+                  Description
                 </label>
-                <input
-                  type="text"
-                  value={category}
-                  onChange={(e) => setCategory(e.target.value)}
+                <textarea
+                  id="description"
+                  value={description}
+                  onChange={(e) => setDescription(e.target.value)}
                   required
-                  style={{
-                    width: "100%",
-                    padding: "10px",
-                    borderRadius: "4px",
-                    border: "1px solid #ccc",
-                    boxSizing: "border-box",
-                  }}
+                  rows="4"
+                  className="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500 transition-colors resize-vertical"
                 />
               </div>
-            </div>
 
-            {/* Description */}
-            <div>
-              <label
-                style={{
-                  display: "block",
-                  marginBottom: "5px",
-                  fontWeight: "bold",
-                }}
+              <button
+                type="submit"
+                className="w-full bg-blue-600 hover:bg-blue-700 text-white font-semibold py-3 px-4 rounded-lg transition-colors duration-200 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-offset-2"
               >
-                Description
-              </label>
-              <textarea
-                value={description}
-                onChange={(e) => setDescription(e.target.value)}
-                required
-                rows="4"
-                style={{
-                  width: "100%",
-                  padding: "10px",
-                  borderRadius: "4px",
-                  border: "1px solid #ccc",
-                  boxSizing: "border-box",
-                  fontFamily: "sans-serif",
-                }}
-              ></textarea>
-            </div>
-
-            <button
-              type="submit"
-              style={{
-                backgroundColor: "#3498db",
-                color: "white",
-                padding: "15px",
-                border: "none",
-                borderRadius: "4px",
-                fontWeight: "bold",
-                fontSize: "16px",
-                cursor: "pointer",
-                marginTop: "10px",
-              }}
-            >
-              Update Product
-            </button>
-          </form>
-        )}
+                Update Product
+              </button>
+            </form>
+          )}
+        </div>
       </div>
     </div>
   );

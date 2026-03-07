@@ -86,131 +86,88 @@ const AdminProductListPage = () => {
   };
 
   return (
-    <div
-      style={{
-        maxWidth: "1200px",
-        margin: "40px auto",
-        fontFamily: "sans-serif",
-        backgroundColor: "#fff",
-        padding: "30px",
-        borderRadius: "8px",
-        boxShadow: "0 4px 8px rgba(0,0,0,0.1)",
-      }}
-    >
-      <div
-        style={{
-          display: "flex",
-          justifyContent: "space-between",
-          alignItems: "center",
-          borderBottom: "2px solid #eee",
-          paddingBottom: "15px",
-          marginBottom: "20px",
-        }}
-      >
-        <h2 style={{ fontSize: "32px", margin: 0 }}>Inventory Management</h2>
-        <button
-          onClick={createProductHandler}
-          style={{
-            backgroundColor: "#2ecc71",
-            color: "white",
-            border: "none",
-            padding: "12px 20px",
-            borderRadius: "4px",
-            fontWeight: "bold",
-            cursor: "pointer",
-            fontSize: "16px",
-          }}
-        >
-          + Create Product
-        </button>
-      </div>
+    <div className="min-h-screen bg-gray-50 py-8 px-4 sm:px-6 lg:px-8">
+      <div className="max-w-7xl mx-auto">
+        <div className="bg-white rounded-xl shadow-lg p-8">
+          <div className="flex justify-between items-center mb-8 border-b-2 border-gray-200 pb-4">
+            <h1 className="text-4xl font-bold text-gray-900">
+              Inventory Management
+            </h1>
+            <button
+              onClick={createProductHandler}
+              className="bg-green-600 hover:bg-green-700 text-white font-semibold px-6 py-3 rounded-lg transition-colors duration-200"
+            >
+              + Create Product
+            </button>
+          </div>
 
-      {loading ? (
-        <p>Loading inventory...</p>
-      ) : error ? (
-        <div
-          style={{
-            padding: "15px",
-            backgroundColor: "#ffcccc",
-            color: "#cc0000",
-            borderRadius: "4px",
-          }}
-        >
-          {error}
-        </div>
-      ) : (
-        <div style={{ overflowX: "auto" }}>
-          <table
-            style={{
-              width: "100%",
-              borderCollapse: "collapse",
-              textAlign: "left",
-            }}
-          >
-            <thead>
-              <tr style={{ backgroundColor: "#222", color: "#fff" }}>
-                <th style={{ padding: "15px" }}>ID</th>
-                <th style={{ padding: "15px" }}>NAME</th>
-                <th style={{ padding: "15px" }}>PRICE</th>
-                <th style={{ padding: "15px" }}>CATEGORY</th>
-                <th style={{ padding: "15px" }}>BRAND</th>
-                <th style={{ padding: "15px" }}>ACTIONS</th>
-              </tr>
-            </thead>
-            <tbody>
-              {products.map((product) => (
-                <tr
-                  key={product._id}
-                  style={{ borderBottom: "1px solid #eee" }}
-                >
-                  <td style={{ padding: "15px", fontWeight: "bold" }}>
-                    {product._id.substring(0, 10)}...
-                  </td>
-                  <td style={{ padding: "15px" }}>{product.name}</td>
-                  <td style={{ padding: "15px" }}>${product.price}</td>
-                  <td style={{ padding: "15px" }}>{product.category}</td>
-                  <td style={{ padding: "15px" }}>{product.brand}</td>
-
-                  <td style={{ padding: "15px", display: "flex", gap: "10px" }}>
-                    {/* Edit Button */}
-                    <Link to={`/admin/product/${product._id}/edit`}>
-                      <button
-                        style={{
-                          backgroundColor: "#3498db",
-                          color: "#fff",
-                          border: "none",
-                          padding: "8px 12px",
-                          borderRadius: "4px",
-                          cursor: "pointer",
-                          fontWeight: "bold",
-                        }}
-                      >
-                        Edit
-                      </button>
-                    </Link>
-
-                    {/* Delete Button */}
-                    <button
-                      onClick={() => deleteHandler(product._id)}
-                      style={{
-                        backgroundColor: "#e74c3c",
-                        color: "#fff",
-                        border: "none",
-                        padding: "8px 12px",
-                        borderRadius: "4px",
-                        cursor: "pointer",
-                        fontWeight: "bold",
-                      }}
+          {loading ? (
+            <p className="text-gray-600 text-lg">Loading inventory...</p>
+          ) : error ? (
+            <div className="bg-red-50 border border-red-200 text-red-700 px-4 py-3 rounded-lg mb-6">
+              {error}
+            </div>
+          ) : (
+            <div className="overflow-x-auto">
+              <table className="w-full border-collapse bg-white">
+                <thead>
+                  <tr className="bg-gray-800 text-white">
+                    <th className="px-6 py-4 text-left font-semibold">ID</th>
+                    <th className="px-6 py-4 text-left font-semibold">NAME</th>
+                    <th className="px-6 py-4 text-left font-semibold">PRICE</th>
+                    <th className="px-6 py-4 text-left font-semibold">
+                      CATEGORY
+                    </th>
+                    <th className="px-6 py-4 text-left font-semibold">BRAND</th>
+                    <th className="px-6 py-4 text-left font-semibold">
+                      ACTIONS
+                    </th>
+                  </tr>
+                </thead>
+                <tbody>
+                  {products.map((product) => (
+                    <tr
+                      key={product._id}
+                      className="border-b border-gray-200 hover:bg-gray-50"
                     >
-                      Delete
-                    </button>
-                  </td>
-                </tr>
-              ))}
-            </tbody>
-          </table>
+                      <td className="px-6 py-4 font-semibold text-gray-700">
+                        {product._id.substring(0, 10)}...
+                      </td>
+                      <td className="px-6 py-4 text-gray-700">
+                        {product.name}
+                      </td>
+                      <td className="px-6 py-4 text-gray-700 font-semibold">
+                        ${product.price}
+                      </td>
+                      <td className="px-6 py-4 text-gray-700">
+                        {product.category}
+                      </td>
+                      <td className="px-6 py-4 text-gray-700">
+                        {product.brand}
+                      </td>
+                      <td className="px-6 py-4">
+                        <div className="flex gap-3">
+                          <Link to={`/admin/product/${product._id}/edit`}>
+                            <button className="bg-blue-600 hover:bg-blue-700 text-white px-4 py-2 rounded-lg font-semibold transition-colors duration-200">
+                              Edit
+                            </button>
+                          </Link>
+                          <button
+                            onClick={() => deleteHandler(product._id)}
+                            className="bg-red-600 hover:bg-red-700 text-white px-4 py-2 rounded-lg font-semibold transition-colors duration-200"
+                          >
+                            Delete
+                          </button>
+                        </div>
+                      </td>
+                    </tr>
+                  ))}
+                </tbody>
+              </table>
+            </div>
+          )}
         </div>
-      )}
+      </div>
     </div>
   );
 };

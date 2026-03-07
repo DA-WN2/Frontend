@@ -1,6 +1,8 @@
 import { useState, useEffect } from "react";
 import axios from "axios";
 import { Link } from "react-router-dom";
+import { motion } from "framer-motion";
+import { FaShoppingCart, FaEye } from "react-icons/fa";
 
 const HomePage = () => {
   const [products, setProducts] = useState([]);
@@ -58,124 +60,133 @@ const HomePage = () => {
   };
 
   return (
-    <div style={{ padding: "20px", fontFamily: "sans-serif" }}>
-      <div
-        style={{
-          display: "flex",
-          justifyContent: "space-between",
-          alignItems: "center",
-          marginBottom: "20px",
-        }}
+    <div className="min-h-screen bg-gray-50">
+      {/* Hero Section */}
+      <motion.div
+        initial={{ opacity: 0, y: -50 }}
+        animate={{ opacity: 1, y: 0 }}
+        transition={{ duration: 0.8 }}
+        className="bg-gradient-to-r from-blue-600 to-purple-700 text-white py-16 px-4 sm:px-6 lg:px-8"
       >
-        <h1>Adil's Store - Latest Products</h1>
-        {/* View Cart button allows user to navigate when they are ready */}
-        <Link
-          to="/cart"
-          style={{
-            textDecoration: "none",
-            backgroundColor: "#222",
-            color: "#fff",
-            padding: "10px 20px",
-            borderRadius: "4px",
-            fontWeight: "bold",
-            boxShadow: "0 2px 4px rgba(0,0,0,0.1)",
-          }}
-        >
-          🛒 View Cart
-        </Link>
-      </div>
-
-      <div style={{ display: "flex", gap: "20px", flexWrap: "wrap" }}>
-        {products.map((product) => (
-          <div
-            key={product._id}
-            style={{
-              border: "1px solid #ccc",
-              padding: "15px",
-              borderRadius: "8px",
-              width: "250px",
-              backgroundColor: "#fff",
-              boxShadow: "0 2px 5px rgba(0,0,0,0.05)",
-            }}
+        <div className="max-w-7xl mx-auto text-center">
+          <motion.h1
+            initial={{ opacity: 0, scale: 0.8 }}
+            animate={{ opacity: 1, scale: 1 }}
+            transition={{ duration: 0.8, delay: 0.2 }}
+            className="text-5xl font-bold mb-4"
           >
-            {/* 1. THE IMAGE BLOCK */}
-            <Link to={`/product/${product._id}`}>
-              <div
-                style={{
-                  width: "100%",
-                  height: "200px",
-                  marginBottom: "15px",
-                  overflow: "hidden",
-                  borderRadius: "4px",
-                }}
-              >
-                <img
-                  src={`https://ecommerce-backend-0cza.onrender.com${product.image.startsWith("/") ? "" : "/"}${product.image}`}
-                  alt={product.name}
-                  style={{ width: "100%", height: "100%", objectFit: "cover" }}
-                  onError={(e) => {
-                    e.target.src =
-                      "https://via.placeholder.com/250x200?text=No+Image";
-                  }}
-                />
-              </div>
-            </Link>
-
+            Welcome to Our Store
+          </motion.h1>
+          <motion.p
+            initial={{ opacity: 0 }}
+            animate={{ opacity: 1 }}
+            transition={{ duration: 0.8, delay: 0.4 }}
+            className="text-xl mb-8"
+          >
+            Discover amazing products at unbeatable prices
+          </motion.p>
+          <motion.div
+            initial={{ opacity: 0, y: 20 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ duration: 0.8, delay: 0.6 }}
+            className="flex justify-center space-x-4"
+          >
             <Link
-              to={`/product/${product._id}`}
-              style={{ textDecoration: "none", color: "#333" }}
+              to="/cart"
+              className="bg-white text-blue-600 px-8 py-3 rounded-lg shadow-md font-semibold hover:bg-gray-100 transition-all duration-200 flex items-center space-x-2"
             >
-              <h3 style={{ margin: "10px 0", fontSize: "18px" }}>
-                {product.name}
-              </h3>
+              <FaShoppingCart />
+              <span>View Cart</span>
             </Link>
+          </motion.div>
+        </div>
+      </motion.div>
 
-            <p style={{ color: "gray", fontSize: "14px" }}>
-              {product.category}
-            </p>
-            <h2 style={{ color: "#2ecc71" }}>${product.price}</h2>
+      <div className="max-w-7xl mx-auto py-8 px-4 sm:px-6 lg:px-8">
+        <div className="mb-12">
+          <h2 className="text-4xl font-bold text-gray-800 tracking-tight text-center">
+            Featured Products
+          </h2>
+        </div>
 
-            <p
-              style={{
-                fontSize: "14px",
-                height: "40px",
-                overflow: "hidden",
-                color: "#666",
-              }}
+        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-8">
+          {products.map((product, index) => (
+            <motion.div
+              key={product._id}
+              initial={{ opacity: 0, y: 50 }}
+              animate={{ opacity: 1, y: 0 }}
+              transition={{ duration: 0.5, delay: index * 0.1 }}
+              whileHover={{ scale: 1.05 }}
+              className="bg-white rounded-xl shadow-lg overflow-hidden hover:shadow-xl transition-shadow duration-300"
             >
-              {product.description}
-            </p>
+              <Link to={`/product/${product._id}`}>
+                <div className="w-full h-48 overflow-hidden">
+                  <img
+                    src={`https://ecommerce-backend-0cza.onrender.com${product.image.startsWith("/") ? "" : "/"}${product.image}`}
+                    alt={product.name}
+                    className="w-full h-full object-cover hover:scale-105 transition-transform duration-300"
+                    onError={(e) => {
+                      e.target.src =
+                        "https://via.placeholder.com/250x200?text=No+Image";
+                    }}
+                  />
+                </div>
+              </Link>
 
-            {/* --- UPDATED BUTTON WITH DYNAMIC FEEDBACK --- */}
-            <button
-              onClick={() => addToCartHandler(product)}
-              disabled={product.countInStock === 0}
-              style={{
-                /* Button turns green temporarily when an item is added */
-                background: addedItems[product._id]
-                  ? "#2ecc71"
-                  : product.countInStock > 0
-                    ? "#333"
-                    : "#ccc",
-                color: "#fff",
-                padding: "10px",
-                width: "100%",
-                border: "none",
-                borderRadius: "4px",
-                cursor: product.countInStock > 0 ? "pointer" : "not-allowed",
-                marginTop: "10px",
-                fontWeight: "bold",
-                transition: "background 0.3s ease",
-              }}
-            >
-              {addedItems[product._id]
-                ? "✅ Added!"
-                : product.countInStock > 0
-                  ? "Add to Cart"
-                  : "Out of Stock"}
-            </button>
-          </div>
-        ))}
+              <div className="p-6">
+                <Link
+                  to={`/product/${product._id}`}
+                  className="text-decoration-none"
+                >
+                  <h3 className="text-xl font-semibold text-gray-800 mb-2 hover:text-blue-600 transition-colors">
+                    {product.name}
+                  </h3>
+                </Link>
+
+                <p className="text-sm text-gray-500 mb-2 uppercase tracking-wide">
+                  {product.category}
+                </p>
+                <p className="text-2xl font-bold text-green-600 mb-3">
+                  ${product.price}
+                </p>
+
+                <p className="text-gray-600 text-sm mb-4 line-clamp-2">
+                  {product.description}
+                </p>
+
+                <div className="flex space-x-2">
+                  <Link
+                    to={`/product/${product._id}`}
+                    className="flex-1 bg-blue-500 hover:bg-blue-600 text-white py-3 px-4 rounded-lg font-semibold transition-colors duration-200 flex items-center justify-center space-x-2"
+                  >
+                    <FaEye />
+                    <span>View</span>
+                  </Link>
+                  <button
+                    onClick={() => addToCartHandler(product)}
+                    disabled={product.countInStock === 0}
+                    className={`flex-1 py-3 px-4 rounded-lg font-semibold transition-colors duration-200 flex items-center justify-center space-x-2 ${
+                      addedItems[product._id]
+                        ? "bg-green-500 hover:bg-green-600 text-white"
+                        : product.countInStock > 0
+                          ? "bg-gray-800 hover:bg-gray-900 text-white"
+                          : "bg-gray-300 text-gray-500 cursor-not-allowed"
+                    }`}
+                  >
+                    <FaShoppingCart />
+                    <span>
+                      {addedItems[product._id]
+                        ? "Added!"
+                        : product.countInStock > 0
+                          ? "Add"
+                          : "Out"}
+                    </span>
+                  </button>
+                </div>
+              </div>
+            </motion.div>
+          ))}
+        </div>
       </div>
     </div>
   );

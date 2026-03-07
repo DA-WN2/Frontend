@@ -1,8 +1,11 @@
 import { Link, useNavigate } from "react-router-dom";
-import { ShoppingCart, User, LogOut } from "lucide-react";
+import { ShoppingCart, User, LogOut, Menu, X } from "lucide-react";
+import { useState } from "react";
+import { motion, AnimatePresence } from "framer-motion";
 
 const Navbar = () => {
   const navigate = useNavigate();
+  const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
 
   // Check if the user is currently logged in by checking Local Storage
   const userInfo = localStorage.getItem("userInfo")
@@ -16,130 +19,222 @@ const Navbar = () => {
     navigate("/login");
   };
 
+  const toggleMobileMenu = () => {
+    setIsMobileMenuOpen(!isMobileMenuOpen);
+  };
+
   return (
-    <nav
-      style={{
-        backgroundColor: "#222",
-        color: "#fff",
-        padding: "15px 30px",
-        display: "flex",
-        justifyContent: "space-between",
-        alignItems: "center",
-        fontFamily: "sans-serif",
-      }}
+    <motion.nav
+      initial={{ y: -100 }}
+      animate={{ y: 0 }}
+      transition={{ duration: 0.5 }}
+      className="bg-gradient-to-r from-blue-900 via-purple-900 to-indigo-900 shadow-xl sticky top-0 z-50 border-b border-purple-800/30"
     >
-      {/* Brand Logo */}
-      <Link
-        to="/"
-        style={{
-          color: "#fff",
-          textDecoration: "none",
-          fontSize: "24px",
-          fontWeight: "bold",
-          letterSpacing: "1px",
-        }}
-      >
-        STORE.
-      </Link>
-
-      {/* Navigation Links */}
-      <div style={{ display: "flex", gap: "25px", alignItems: "center" }}>
-        <Link
-          to="/cart"
-          style={{
-            color: "#fff",
-            textDecoration: "none",
-            display: "flex",
-            alignItems: "center",
-            gap: "8px",
-          }}
-        >
-          <ShoppingCart size={20} /> Cart
-        </Link>
-
-        {/* Conditional Rendering: Show User Name & Logout IF logged in, else show Sign In */}
-        {userInfo ? (
-          <div style={{ display: "flex", alignItems: "center", gap: "20px" }}>
+      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+        <div className="flex justify-between items-center h-16">
+          {/* Brand Logo */}
+          <motion.div whileHover={{ scale: 1.05 }} whileTap={{ scale: 0.95 }}>
             <Link
-              to="/profile"
-              style={{
-                textDecoration: "none",
-                display: "flex",
-                alignItems: "center",
-                gap: "8px",
-                color: "#2ecc71",
-                fontWeight: "bold",
-              }}
+              to="/"
+              className="text-white text-2xl font-bold tracking-wider hover:text-cyan-400 transition-colors duration-300"
             >
-              <User size={20} /> {userInfo.name}
+              STORE.
             </Link>
-            {/* Add this right ABOVE your Logout button in Navbar.jsx */}
-            {userInfo.role === "admin" && (
+          </motion.div>
+
+          {/* Desktop Navigation */}
+          <div className="hidden md:flex items-center space-x-8">
+            <motion.div whileHover={{ scale: 1.1 }} whileTap={{ scale: 0.9 }}>
               <Link
-                to="/admin"
-                style={{
-                  background: "#f39c12",
-                  color: "#fff",
-                  textDecoration: "none",
-                  padding: "5px 10px",
-                  borderRadius: "4px",
-                  fontWeight: "bold",
-                  fontSize: "14px",
-                }}
+                to="/cart"
+                className="text-white hover:text-cyan-400 transition-colors duration-300 flex items-center space-x-2 font-medium"
               >
-                Admin Dashboard
+                <ShoppingCart size={20} />
+                <span>Cart</span>
               </Link>
+            </motion.div>
+
+            {/* Conditional Rendering: Show User Name & Logout IF logged in, else show Sign In */}
+            {userInfo ? (
+              <div className="flex items-center space-x-6">
+                <motion.div
+                  whileHover={{ scale: 1.05 }}
+                  whileTap={{ scale: 0.95 }}
+                >
+                  <Link
+                    to="/profile"
+                    className="text-amber-400 hover:text-amber-300 transition-colors duration-300 flex items-center space-x-2 font-semibold"
+                  >
+                    <User size={20} />
+                    <span>{userInfo.name}</span>
+                  </Link>
+                </motion.div>
+
+                {/* Admin Links */}
+                {userInfo.role === "admin" && (
+                  <>
+                    <motion.div
+                      whileHover={{ scale: 1.05 }}
+                      whileTap={{ scale: 0.95 }}
+                    >
+                      <Link
+                        to="/admin"
+                        className="bg-indigo-600 hover:bg-indigo-500 text-white px-3 py-1 rounded-lg font-semibold text-sm transition-colors duration-300"
+                      >
+                        Admin Dashboard
+                      </Link>
+                    </motion.div>
+                    <motion.div
+                      whileHover={{ scale: 1.05 }}
+                      whileTap={{ scale: 0.95 }}
+                    >
+                      <Link
+                        to="/admin/productlist"
+                        className="bg-violet-600 hover:bg-violet-500 text-white px-3 py-1 rounded-lg font-semibold text-sm transition-colors duration-300"
+                      >
+                        Products
+                      </Link>
+                    </motion.div>
+                  </>
+                )}
+
+                <motion.button
+                  whileHover={{ scale: 1.05 }}
+                  whileTap={{ scale: 0.95 }}
+                  onClick={logoutHandler}
+                  className="bg-rose-600 hover:bg-rose-500 text-white px-4 py-2 rounded-lg font-medium transition-colors duration-300 flex items-center space-x-2 border border-rose-500"
+                >
+                  <LogOut size={16} />
+                  <span>Logout</span>
+                </motion.button>
+              </div>
+            ) : (
+              <motion.div whileHover={{ scale: 1.1 }} whileTap={{ scale: 0.9 }}>
+                <Link
+                  to="/login"
+                  className="text-white hover:text-blue-400 transition-colors duration-300 flex items-center space-x-2 font-medium"
+                >
+                  <User size={20} />
+                  <span>Sign In</span>
+                </Link>
+              </motion.div>
             )}
-            {userInfo.role === "admin" && (
-              <Link
-                to="/admin/productlist"
-                style={{
-                  background: "#9b59b6",
-                  color: "#fff",
-                  textDecoration: "none",
-                  padding: "5px 10px",
-                  borderRadius: "4px",
-                  fontWeight: "bold",
-                  fontSize: "14px",
-                  marginLeft: "10px",
-                }}
-              >
-                Products
-              </Link>
-            )}
-            <button
-              onClick={logoutHandler}
-              style={{
-                background: "transparent",
-                color: "#fff",
-                border: "1px solid #fff",
-                padding: "5px 10px",
-                borderRadius: "4px",
-                cursor: "pointer",
-                display: "flex",
-                alignItems: "center",
-                gap: "5px",
-              }}
-            >
-              <LogOut size={16} /> Logout
-            </button>
           </div>
-        ) : (
-          <Link
-            to="/login"
-            style={{
-              color: "#fff",
-              textDecoration: "none",
-              display: "flex",
-              alignItems: "center",
-              gap: "8px",
-            }}
-          >
-            <User size={20} /> Sign In
-          </Link>
-        )}
+
+          {/* Mobile Menu Button */}
+          <div className="md:hidden">
+            <motion.button
+              whileTap={{ scale: 0.9 }}
+              onClick={toggleMobileMenu}
+              className="text-white hover:text-cyan-400 transition-colors duration-300"
+            >
+              {isMobileMenuOpen ? <X size={24} /> : <Menu size={24} />}
+            </motion.button>
+          </div>
+        </div>
+
+        {/* Mobile Menu */}
+        <AnimatePresence>
+          {isMobileMenuOpen && (
+            <motion.div
+              initial={{ opacity: 0, height: 0 }}
+              animate={{ opacity: 1, height: "auto" }}
+              exit={{ opacity: 0, height: 0 }}
+              transition={{ duration: 0.3 }}
+              className="md:hidden bg-gradient-to-r from-blue-800 via-purple-800 to-indigo-800 rounded-lg mt-2 py-4 px-4 space-y-4 shadow-lg"
+            >
+              <motion.div
+                whileHover={{ scale: 1.05 }}
+                whileTap={{ scale: 0.95 }}
+              >
+                <Link
+                  to="/cart"
+                  className="text-white hover:text-cyan-400 transition-colors duration-300 flex items-center space-x-2 font-medium block"
+                  onClick={() => setIsMobileMenuOpen(false)}
+                >
+                  <ShoppingCart size={20} />
+                  <span>Cart</span>
+                </Link>
+              </motion.div>
+
+              {userInfo ? (
+                <div className="space-y-4">
+                  <motion.div
+                    whileHover={{ scale: 1.05 }}
+                    whileTap={{ scale: 0.95 }}
+                  >
+                    <Link
+                      to="/profile"
+                      className="text-amber-400 hover:text-amber-300 transition-colors duration-300 flex items-center space-x-2 font-semibold block"
+                      onClick={() => setIsMobileMenuOpen(false)}
+                    >
+                      <User size={20} />
+                      <span>{userInfo.name}</span>
+                    </Link>
+                  </motion.div>
+
+                  {userInfo.role === "admin" && (
+                    <>
+                      <motion.div
+                        whileHover={{ scale: 1.05 }}
+                        whileTap={{ scale: 0.95 }}
+                      >
+                        <Link
+                          to="/admin"
+                          className="bg-indigo-600 hover:bg-indigo-500 text-white px-3 py-2 rounded-lg font-semibold text-sm transition-colors duration-300 block text-center"
+                          onClick={() => setIsMobileMenuOpen(false)}
+                        >
+                          Admin Dashboard
+                        </Link>
+                      </motion.div>
+                      <motion.div
+                        whileHover={{ scale: 1.05 }}
+                        whileTap={{ scale: 0.95 }}
+                      >
+                        <Link
+                          to="/admin/productlist"
+                          className="bg-violet-600 hover:bg-violet-500 text-white px-3 py-2 rounded-lg font-semibold text-sm transition-colors duration-300 block text-center"
+                          onClick={() => setIsMobileMenuOpen(false)}
+                        >
+                          Products
+                        </Link>
+                      </motion.div>
+                    </>
+                  )}
+
+                  <motion.button
+                    whileHover={{ scale: 1.05 }}
+                    whileTap={{ scale: 0.95 }}
+                    onClick={() => {
+                      logoutHandler();
+                      setIsMobileMenuOpen(false);
+                    }}
+                    className="bg-rose-600 hover:bg-rose-500 text-white px-4 py-2 rounded-lg font-medium transition-colors duration-300 flex items-center space-x-2 border border-rose-500 w-full justify-center"
+                  >
+                    <LogOut size={16} />
+                    <span>Logout</span>
+                  </motion.button>
+                </div>
+              ) : (
+                <motion.div
+                  whileHover={{ scale: 1.05 }}
+                  whileTap={{ scale: 0.95 }}
+                >
+                  <Link
+                    to="/login"
+                    className="text-white hover:text-cyan-400 transition-colors duration-300 flex items-center space-x-2 font-medium block"
+                    onClick={() => setIsMobileMenuOpen(false)}
+                  >
+                    <User size={20} />
+                    <span>Sign In</span>
+                  </Link>
+                </motion.div>
+              )}
+            </motion.div>
+          )}
+        </AnimatePresence>
       </div>
-    </nav>
+    </motion.nav>
   );
 };
 

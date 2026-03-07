@@ -1,6 +1,8 @@
 import { useState, useEffect } from "react";
 import { Link, useParams, useLocation, useNavigate } from "react-router-dom";
 import axios from "axios";
+import { motion } from "framer-motion";
+import { FaTrash, FaShoppingCart, FaArrowRight } from "react-icons/fa";
 
 const CartPage = () => {
   const { id } = useParams();
@@ -104,84 +106,53 @@ const CartPage = () => {
   };
 
   return (
-    <div
-      style={{
-        maxWidth: "1200px",
-        margin: "0 auto",
-        fontFamily: "sans-serif",
-        padding: "20px",
-      }}
-    >
-      <h2 style={{ fontSize: "32px", marginBottom: "30px" }}>Shopping Cart</h2>
-
-      {cartItems.length === 0 ? (
-        <div
-          style={{
-            padding: "20px",
-            backgroundColor: "#e2e3e5",
-            color: "#383d41",
-            borderRadius: "4px",
-            fontSize: "18px",
-          }}
+    <div className="min-h-screen bg-gradient-to-br from-orange-50 to-red-50 py-8 px-4 sm:px-6 lg:px-8">
+      <div className="max-w-7xl mx-auto">
+        <motion.h1
+          initial={{ opacity: 0, y: -20 }}
+          animate={{ opacity: 1, y: 0 }}
+          transition={{ duration: 0.6 }}
+          className="text-4xl font-bold text-gray-900 mb-8 flex items-center space-x-2"
         >
-          Your cart is empty.{" "}
-          <Link
-            to="/"
-            style={{
-              fontWeight: "bold",
-              color: "#222",
-              textDecoration: "none",
-            }}
+          <FaShoppingCart />
+          <span>Shopping Cart</span>
+        </motion.h1>
+
+        {cartItems.length === 0 ? (
+          <motion.div
+            initial={{ opacity: 0, scale: 0.9 }}
+            animate={{ opacity: 1, scale: 1 }}
+            transition={{ duration: 0.6 }}
+            className="bg-gray-100 border border-gray-200 text-gray-700 px-6 py-4 rounded-lg text-center"
           >
-            Go Back To Store
-          </Link>
-        </div>
-      ) : (
-        <div style={{ display: "flex", gap: "30px", flexWrap: "wrap" }}>
-          <div style={{ flex: "2", minWidth: "300px" }}>
-            {cartItems.map((item) => {
-              console.log(
-                "cart item image url",
-                item.product,
-                makeUrl(item.image),
-              );
-              return (
-                <div
+            <p className="text-lg mb-4">Your cart is empty.</p>
+            <Link
+              to="/"
+              className="inline-block bg-blue-600 hover:bg-blue-700 text-white font-semibold px-6 py-3 rounded-lg transition-all duration-200 hover:shadow-lg flex items-center space-x-2"
+            >
+              <FaArrowRight />
+              <span>Go Back To Store</span>
+            </Link>
+          </motion.div>
+        ) : (
+          <div className="flex flex-col lg:flex-row gap-8">
+            {/* Cart Items */}
+            <div className="flex-1 space-y-4">
+              {cartItems.map((item, index) => (
+                <motion.div
                   key={item.product}
-                  style={{
-                    display: "flex",
-                    alignItems: "center",
-                    justifyContent: "space-between",
-                    padding: "20px",
-                    borderBottom: "1px solid #ddd",
-                    backgroundColor: "#fff",
-                    borderRadius: "8px",
-                    boxShadow: "0 2px 4px rgba(0,0,0,0.05)",
-                    marginBottom: "15px",
-                  }}
+                  initial={{ opacity: 0, x: -50 }}
+                  animate={{ opacity: 1, x: 0 }}
+                  transition={{ duration: 0.5, delay: index * 0.1 }}
+                  whileHover={{ scale: 1.02 }}
+                  className="bg-white rounded-lg shadow-md p-6 flex items-center justify-between hover:shadow-lg transition-shadow duration-300"
                 >
-                  {/* --- FIXED IMAGE BLOCK --- */}
-                  <div
-                    style={{
-                      width: "80px",
-                      height: "80px",
-                      borderRadius: "4px",
-                      overflow: "hidden",
-                      border: "1px solid #eee",
-                    }}
-                  >
+                  {/* Product Image */}
+                  <div className="w-20 h-20 rounded-lg overflow-hidden border border-gray-200 flex-shrink-0">
                     <img
-                      /* 1. We changed 'product.image' to 'item.image'
-                       2. Added .replace() to handle Windows slashes
-                       3. Added a leading slash check to prevent double-slashes
-                    */
                       src={makeUrl(item.image)}
                       alt={item.name}
-                      style={{
-                        width: "100%",
-                        height: "100%",
-                        objectFit: "cover",
-                      }}
+                      className="w-full h-full object-cover"
                       onError={(e) => {
                         e.target.src =
                           "https://via.placeholder.com/80?text=No+Img";
@@ -189,42 +160,26 @@ const CartPage = () => {
                     />
                   </div>
 
+                  {/* Product Details */}
                   <Link
                     to={`/product/${item.product}`}
-                    style={{
-                      textDecoration: "none",
-                      color: "#333",
-                      flex: "1",
-                      marginLeft: "20px",
-                      fontWeight: "bold",
-                      fontSize: "18px",
-                    }}
+                    className="flex-1 ml-6 text-gray-900 hover:text-blue-600 transition-colors font-semibold text-lg"
                   >
                     {item.name}
                   </Link>
 
-                  <div
-                    style={{
-                      fontWeight: "bold",
-                      fontSize: "18px",
-                      width: "100px",
-                    }}
-                  >
+                  {/* Price */}
+                  <div className="font-bold text-lg text-gray-900 w-24 text-center">
                     ${item.price}
                   </div>
 
+                  {/* Quantity Selector */}
                   <select
                     value={item.qty}
                     onChange={(e) =>
                       updateQtyHandler(item.product, Number(e.target.value))
                     }
-                    style={{
-                      padding: "8px",
-                      borderRadius: "4px",
-                      border: "1px solid #ccc",
-                      fontSize: "16px",
-                      marginRight: "20px",
-                    }}
+                    className="mx-6 px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500"
                   >
                     {[...Array(item.countInStock).keys()].map((x) => (
                       <option key={x + 1} value={x + 1}>
@@ -233,76 +188,70 @@ const CartPage = () => {
                     ))}
                   </select>
 
-                  <button
+                  {/* Remove Button */}
+                  <motion.button
+                    whileHover={{ scale: 1.1 }}
+                    whileTap={{ scale: 0.9 }}
                     onClick={() => removeFromCartHandler(item.product)}
-                    style={{
-                      padding: "10px 15px",
-                      backgroundColor: "#e74c3c",
-                      color: "white",
-                      border: "none",
-                      borderRadius: "4px",
-                      cursor: "pointer",
-                      fontWeight: "bold",
-                    }}
+                    className="bg-red-500 hover:bg-red-600 text-white px-4 py-2 rounded-lg font-semibold transition-colors duration-200 flex items-center space-x-1"
                   >
-                    X
-                  </button>
-                </div>
-              );
-            })}
-          </div>
+                    <FaTrash />
+                    <span>Remove</span>
+                  </motion.button>
+                </motion.div>
+              ))}
+            </div>
 
-          {/* Checkout Summary */}
-          <div
-            style={{
-              flex: "1",
-              minWidth: "250px",
-              border: "1px solid #ddd",
-              padding: "25px",
-              borderRadius: "8px",
-              height: "fit-content",
-              backgroundColor: "#fff",
-              boxShadow: "0 4px 6px rgba(0,0,0,0.05)",
-            }}
-          >
-            <h3
-              style={{
-                marginTop: 0,
-                fontSize: "22px",
-                borderBottom: "1px solid #eee",
-                paddingBottom: "15px",
-              }}
+            {/* Checkout Summary */}
+            <motion.div
+              initial={{ opacity: 0, x: 50 }}
+              animate={{ opacity: 1, x: 0 }}
+              transition={{ duration: 0.6, delay: 0.3 }}
+              className="lg:w-96 bg-white rounded-lg shadow-md p-6 h-fit"
             >
-              Subtotal ({cartItems.reduce((acc, item) => acc + item.qty, 0)})
-              items
-            </h3>
-            <h2
-              style={{ color: "#2ecc71", fontSize: "28px", margin: "20px 0" }}
-            >
-              $
-              {cartItems
-                .reduce((acc, item) => acc + item.qty * item.price, 0)
-                .toFixed(2)}
-            </h2>
-            <button
-              onClick={checkoutHandler}
-              style={{
-                width: "100%",
-                padding: "15px",
-                backgroundColor: "#222",
-                color: "#fff",
-                border: "none",
-                borderRadius: "4px",
-                fontSize: "16px",
-                fontWeight: "bold",
-                cursor: "pointer",
-              }}
-            >
-              Proceed To Checkout
-            </button>
+              <h2 className="text-2xl font-bold text-gray-900 mb-4 border-b border-gray-200 pb-4">
+                Order Summary
+              </h2>
+
+              <div className="space-y-4">
+                <div className="flex justify-between text-lg">
+                  <span>
+                    Items ({cartItems.reduce((acc, item) => acc + item.qty, 0)})
+                  </span>
+                  <span className="font-semibold">
+                    $
+                    {cartItems
+                      .reduce((acc, item) => acc + item.qty * item.price, 0)
+                      .toFixed(2)}
+                  </span>
+                </div>
+
+                <div className="border-t border-gray-200 pt-4">
+                  <div className="flex justify-between text-2xl font-bold text-green-600">
+                    <span>Total</span>
+                    <span>
+                      $
+                      {cartItems
+                        .reduce((acc, item) => acc + item.qty * item.price, 0)
+                        .toFixed(2)}
+                    </span>
+                  </div>
+                </div>
+
+                <motion.button
+                  whileHover={{ scale: 1.05 }}
+                  whileTap={{ scale: 0.95 }}
+                  onClick={checkoutHandler}
+                  className="w-full bg-gray-800 hover:bg-gray-900 text-white font-semibold py-3 px-4 rounded-lg transition-colors duration-200 mt-6 flex items-center justify-center space-x-2"
+                >
+                  <FaArrowRight />
+                  <span>Proceed To Checkout</span>
+                </motion.button>
+              </div>
+            </motion.div>
           </div>
-        </div>
-      )}
+        )}
+      </div>
     </div>
   );
 };

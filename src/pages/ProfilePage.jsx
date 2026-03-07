@@ -62,198 +62,112 @@ const ProfilePage = () => {
   }, [navigate, userInfo]);
 
   return (
-    <div
-      style={{
-        maxWidth: "1200px",
-        margin: "40px auto",
-        fontFamily: "sans-serif",
-      }}
-    >
-      {/* --- SUCCESS BANNER --- */}
-      {showSuccess && (
-        <div
-          style={{
-            padding: "15px",
-            backgroundColor: "#2ecc71",
-            color: "#fff",
-            borderRadius: "8px",
-            textAlign: "center",
-            marginBottom: "20px",
-            fontWeight: "bold",
-            fontSize: "18px",
-            boxShadow: "0 4px 6px rgba(0,0,0,0.1)",
-            animation: "fadeIn 0.5s",
-          }}
-        >
-          ✅ Payment Successful! Your order history has been updated.
-        </div>
-      )}
+    <div className="min-h-screen bg-gray-50 py-8 px-4 sm:px-6 lg:px-8">
+      <div className="max-w-7xl mx-auto">
+        {/* Success Banner */}
+        {showSuccess && (
+          <div className="bg-green-500 text-white px-6 py-4 rounded-lg text-center mb-8 font-semibold text-lg shadow-md animate-pulse">
+            ✅ Payment Successful! Your order history has been updated.
+          </div>
+        )}
 
-      <div style={{ display: "flex", gap: "40px", flexWrap: "wrap" }}>
-        {/* Left Side: Profile Details */}
-        <div
-          style={{
-            flex: "1",
-            minWidth: "250px",
-            backgroundColor: "#fff",
-            padding: "20px",
-            borderRadius: "8px",
-            border: "1px solid #ddd",
-            height: "fit-content",
-          }}
-        >
-          <h2
-            style={{
-              fontSize: "24px",
-              borderBottom: "1px solid #eee",
-              paddingBottom: "10px",
-              marginTop: 0,
-            }}
-          >
-            My Profile
-          </h2>
-          <p style={{ fontSize: "18px" }}>
-            <strong>Name:</strong> {userInfo?.name}
-          </p>
-          <p style={{ fontSize: "18px" }}>
-            <strong>Email:</strong> {userInfo?.email}
-          </p>
-        </div>
-
-        {/* Right Side: Order History Table */}
-        <div
-          style={{
-            flex: "3",
-            minWidth: "400px",
-            backgroundColor: "#fff",
-            padding: "20px",
-            borderRadius: "8px",
-            border: "1px solid #ddd",
-          }}
-        >
-          <h2
-            style={{
-              fontSize: "24px",
-              borderBottom: "1px solid #eee",
-              paddingBottom: "10px",
-              marginTop: 0,
-            }}
-          >
-            Order History
-          </h2>
-
-          {loading ? (
-            <p>Loading your orders...</p>
-          ) : error ? (
-            <div
-              style={{
-                padding: "15px",
-                backgroundColor: "#ffcccc",
-                color: "#cc0000",
-                borderRadius: "4px",
-              }}
-            >
-              {error}
+        <div className="flex flex-col lg:flex-row gap-8">
+          {/* Profile Details */}
+          <div className="lg:w-80 bg-white rounded-lg shadow-md p-6 h-fit">
+            <h1 className="text-2xl font-bold text-gray-900 mb-4 border-b border-gray-200 pb-2">
+              My Profile
+            </h1>
+            <div className="space-y-3">
+              <p className="text-lg text-gray-700">
+                <span className="font-semibold">Name:</span> {userInfo?.name}
+              </p>
+              <p className="text-lg text-gray-700">
+                <span className="font-semibold">Email:</span> {userInfo?.email}
+              </p>
             </div>
-          ) : orders.length === 0 ? (
-            <p style={{ fontSize: "18px", color: "#666" }}>
-              You haven't placed any orders yet.
-            </p>
-          ) : (
-            <div style={{ overflowX: "auto" }}>
-              <table
-                style={{
-                  width: "100%",
-                  borderCollapse: "collapse",
-                  textAlign: "left",
-                }}
-              >
-                <thead>
-                  <tr style={{ backgroundColor: "#f9f9f9" }}>
-                    <th
-                      style={{
-                        padding: "12px",
-                        borderBottom: "2px solid #ddd",
-                      }}
-                    >
-                      ID
-                    </th>
-                    <th
-                      style={{
-                        padding: "12px",
-                        borderBottom: "2px solid #ddd",
-                      }}
-                    >
-                      DATE
-                    </th>
-                    <th
-                      style={{
-                        padding: "12px",
-                        borderBottom: "2px solid #ddd",
-                      }}
-                    >
-                      TOTAL
-                    </th>
-                    <th
-                      style={{
-                        padding: "12px",
-                        borderBottom: "2px solid #ddd",
-                      }}
-                    >
-                      PAID
-                    </th>
-                    <th
-                      style={{
-                        padding: "12px",
-                        borderBottom: "2px solid #ddd",
-                      }}
-                    >
-                      DELIVERED
-                    </th>
-                  </tr>
-                </thead>
-                <tbody>
-                  {orders.map(
-                    (order) =>
-                      order && (
-                        <tr
-                          key={order._id}
-                          style={{ borderBottom: "1px solid #eee" }}
-                        >
-                          <td style={{ padding: "12px" }}>
-                            {order?._id?.substring(0, 10)}...
-                          </td>
-                          <td style={{ padding: "12px" }}>
-                            {order?.createdAt?.substring(0, 10)}
-                          </td>
-                          <td style={{ padding: "12px" }}>
-                            ${order?.totalPrice?.toFixed(2)}
-                          </td>
-                          <td
-                            style={{
-                              padding: "12px",
-                              fontWeight: "bold",
-                              color: order?.isPaid ? "#2ecc71" : "#e74c3c",
-                            }}
+          </div>
+
+          {/* Order History */}
+          <div className="flex-1 bg-white rounded-lg shadow-md p-6">
+            <h1 className="text-2xl font-bold text-gray-900 mb-4 border-b border-gray-200 pb-2">
+              Order History
+            </h1>
+
+            {loading ? (
+              <p className="text-gray-600">Loading your orders...</p>
+            ) : error ? (
+              <div className="bg-red-50 border border-red-200 text-red-700 px-4 py-3 rounded-lg">
+                {error}
+              </div>
+            ) : orders.length === 0 ? (
+              <p className="text-lg text-gray-500">
+                You haven't placed any orders yet.
+              </p>
+            ) : (
+              <div className="overflow-x-auto">
+                <table className="w-full border-collapse">
+                  <thead>
+                    <tr className="bg-gray-50">
+                      <th className="px-4 py-3 text-left font-semibold text-gray-900 border-b-2 border-gray-200">
+                        ID
+                      </th>
+                      <th className="px-4 py-3 text-left font-semibold text-gray-900 border-b-2 border-gray-200">
+                        DATE
+                      </th>
+                      <th className="px-4 py-3 text-left font-semibold text-gray-900 border-b-2 border-gray-200">
+                        TOTAL
+                      </th>
+                      <th className="px-4 py-3 text-left font-semibold text-gray-900 border-b-2 border-gray-200">
+                        PAID
+                      </th>
+                      <th className="px-4 py-3 text-left font-semibold text-gray-900 border-b-2 border-gray-200">
+                        DELIVERED
+                      </th>
+                    </tr>
+                  </thead>
+                  <tbody>
+                    {orders.map(
+                      (order) =>
+                        order && (
+                          <tr
+                            key={order._id}
+                            className="border-b border-gray-100 hover:bg-gray-50"
                           >
-                            {order?.isPaid ? "Yes" : "No"}
-                          </td>
-                          <td
-                            style={{
-                              padding: "12px",
-                              fontWeight: "bold",
-                              color: order?.isDelivered ? "#2ecc71" : "#e74c3c",
-                            }}
-                          >
-                            {order?.isDelivered ? "Yes" : "No"}
-                          </td>
-                        </tr>
-                      ),
-                  )}
-                </tbody>
-              </table>
-            </div>
-          )}
+                            <td className="px-4 py-3 text-gray-700">
+                              {order?._id?.substring(0, 10)}...
+                            </td>
+                            <td className="px-4 py-3 text-gray-700">
+                              {order?.createdAt?.substring(0, 10)}
+                            </td>
+                            <td className="px-4 py-3 text-gray-700 font-semibold">
+                              ${order?.totalPrice?.toFixed(2)}
+                            </td>
+                            <td
+                              className={`px-4 py-3 font-semibold ${
+                                order?.isPaid
+                                  ? "text-green-600"
+                                  : "text-red-600"
+                              }`}
+                            >
+                              {order?.isPaid ? "Yes" : "No"}
+                            </td>
+                            <td
+                              className={`px-4 py-3 font-semibold ${
+                                order?.isDelivered
+                                  ? "text-green-600"
+                                  : "text-red-600"
+                              }`}
+                            >
+                              {order?.isDelivered ? "Yes" : "No"}
+                            </td>
+                          </tr>
+                        ),
+                    )}
+                  </tbody>
+                </table>
+              </div>
+            )}
+          </div>
         </div>
       </div>
     </div>
