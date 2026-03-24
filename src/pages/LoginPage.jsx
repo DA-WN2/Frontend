@@ -28,9 +28,9 @@ const LoginPage = () => {
     setError("");
 
     try {
-      // THE FIX: Changed /signin to /login to match standard backend routing
+      // THE FIX: Pointing exactly to the /signin route defined in your authRoutes.js
       const { data } = await axios.post(
-        "https://ecommerce-backend-0cza.onrender.com/api/auth/login",
+        "https://ecommerce-backend-0cza.onrender.com/api/auth/signin",
         {
           email,
           password,
