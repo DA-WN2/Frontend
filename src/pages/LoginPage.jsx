@@ -28,8 +28,9 @@ const LoginPage = () => {
     setError("");
 
     try {
+      // THE FIX: Changed /signin to /login to match standard backend routing
       const { data } = await axios.post(
-        "https://ecommerce-backend-0cza.onrender.com/api/auth/signin",
+        "https://ecommerce-backend-0cza.onrender.com/api/auth/login",
         {
           email,
           password,
