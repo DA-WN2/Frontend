@@ -39,9 +39,9 @@ const RegisterPage = () => {
         headers: { "Content-Type": "application/json" },
       };
 
-      // Send the data to your Express backend
+      // THE FIX: Pointing to the correct /api/auth/signup backend route
       const { data } = await axios.post(
-        "https://ecommerce-backend-0cza.onrender.com/api/users",
+        "https://ecommerce-backend-0cza.onrender.com/api/auth/signup",
         { name, email, password },
         config,
       );
