@@ -140,6 +140,14 @@ const ProductPage = () => {
               {product.name}
             </h1>
             <div className="border-b border-gray-200 mb-4"></div>
+
+            {/* THE FIX: Added the Brand text right here! */}
+            {product.brand && (
+              <p className="text-sm text-blue-600 uppercase tracking-wide font-bold mb-2">
+                Brand: {product.brand}
+              </p>
+            )}
+
             <p className="text-sm text-gray-500 uppercase tracking-wide font-semibold mb-4">
               Category: {product.category}
             </p>
